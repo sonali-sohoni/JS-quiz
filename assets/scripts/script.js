@@ -1,7 +1,6 @@
-var start_btn = document.getElementById("start");
 var qb = [
 	{
-		q: "What are different data types in JS",
+		q: "What are different data types in JS ?",
 		a: [
 			"string,number,boolean",
 			"string,number,boolean,undefined",
@@ -11,7 +10,7 @@ var qb = [
 	},
 
 	{
-		q: "What is the type of JavaScript language",
+		q: "What is the type of JavaScript language ?",
 		a: ["Object oriented", "Object based", "Assembly language", "High level"],
 	},
 	{
@@ -51,7 +50,7 @@ function generateRandomQuestion() {
 }
 
 function createElemAndDisplayQuestion() {
-	var qString = qb[0].q;
+	var qString = qb[qindex].q;
 	var pelem = document.createElement("p");
 	pelem.classList.add("question");
 	pelem.innerHTML = "Question: " + qString;
@@ -61,12 +60,19 @@ function createElemAndDisplayQuestion() {
 }
 
 function buildAQuestion() {
+	clearContents();
 	generateRandomQuestion();
 	createElemAndDisplayQuestion();
 	startTimer();
-	displayCountDownTimer();
 }
 
+function clearContents() {
+	var qaholder = document.querySelector(".qaholder");
+	while (qaholder.firstChild) {
+		qaholder.removeChild(qaholder.lastChild);
+	}
+	document.querySelector(".topper").style.display = "none";
+}
 var startTheQuiz = function () {
 	initialize();
 	createAQuestion();
@@ -78,7 +84,6 @@ var startTheQuiz = function () {
 };
 
 window.onload = function () {
-  
-	startTimer();
-	createElemAndDisplayQuestion();
+	var start_btn = document.getElementById("start");
+	start_btn.addEventListener("click", buildAQuestion);
 };
