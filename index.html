@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./assets/css/style.css" />
+		<title>JavaScript Quiz</title>
+	</head>
+	<body>
+		<header>
+			<h1>Welcome to Java Script Quiz</h1>
+       <div class=timer>Time:<span id="tleft"></span></div>
+		</header>
+		<main>
+			<script type="text/JavaScript" src="./assets/scripts/script.js"></script>
+      <section class='topper'>
+       
+				<input
+					type="button"
+					id="start"
+					class="btns btn-start"
+					value="Start the quiz"
+				/>
+      </section>
+			<section id="cont-section">
+      
+        
+				<form name="quizForm" >
+          <div class ="qaholder">
+					<p class="question">
+						Question: What are the data types in JavaScript?
+					</p>
+					<div class="answers">
+						<ul id="ansUL">
+							<li>
+								<input type="radio" name="ans-radio" id="ans1" />
+								<label for="ans1">string,number,boolean</label>
+							</li>
+							<li>
+								<input type="radio" name="ans-radio" id="ans2" />
+								<label for="ans2">string,number,boolean,undefined</label>
+							</li>
+							<li>
+								<input type="radio" name="ans-radio" id="ans3" />
+								<label for="ans2">string,number,boolean,undefined,null</label>
+							</li>
+							<li>
+								<input type="radio" name="ans-radio" id="ans4" />
+								<label for="ans4">string,number</label>
+							</li>
+						</ul>
+						<section class ="form-btns">
+							<input type="submit" id="next-btn" value="Next" class="btns" />
+							<input
+								type="button"
+								id="exit-btn"
+								value="Exit Quiz"
+								class="btns"
+							/>
+						</div>
+					</div>
+          </div>
+				</form>
+        
+			</section>
+		</main>
+	</body>
+</html>
