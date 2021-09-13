@@ -100,7 +100,7 @@ var qindex = -1;
 
 window.onload = function () {
 	var start_btn = document.getElementById("start");
-	start_btn.addEventListener("click", buildAQuestion);
+	start_btn.addEventListener("click", startGame);
 	function initialize() {
 		var qindex = -1;
 	}
@@ -115,9 +115,10 @@ window.onload = function () {
 
 	function generateRandomQuestion() {
 		qindex = Math.floor(Math.random() * qb.length);
+		console.log(qindex);
 	}
 
-	function createElemAndDisplayQuestion() {
+	function createQuestionElement() {
 		var qString = qb[qindex].q;
 		var pelem = document.createElement("p");
 		pelem.classList.add("question");
@@ -127,7 +128,7 @@ window.onload = function () {
 		console.log(qform);
 	}
 
-	function createAndDisplayAnswerElements() {
+	function createAnswersRadio() {
 		var ansArray = qb[qindex].a;
 		console.log(ansArray);
 		var div1 = document.createElement("div");
@@ -141,7 +142,7 @@ window.onload = function () {
 			var radioHtml =
 				"<input type='radio' name='ans-radio' id='" +
 				radioId +
-				"' data-answer-selected='" +
+				"'data-answer-selected='" +
 				i +
 				"'/>";
 			var labelHtml =
@@ -153,18 +154,24 @@ window.onload = function () {
 		div1.append(ul1);
 		var holder = document.querySelector(".qaholder");
 		holder.appendChild(div1);
+		document.querySelector(".form-btns").classList.remove("toggleDisplay");
+		document.querySelector(".results").classList.add("toggleDisplay");
 	}
 
-	function buildAQuestion() {
-		clearContents();
-		generateRandomQuestion();
-		createElemAndDisplayQuestion();
-		createAndDisplayAnswerElements();
+	function startGame() {
+		buildNextQuestion();
 		startTimer();
 	}
 
-	function clearContents() {
-		var qaholder = document.querySelector(".qaholder");
+	function buildNextQuestion() {
+		clearContents(".qaholder");
+		generateRandomQuestion();
+		createQuestionElement();
+		createAnswersRadio();
+	}
+
+	function clearContents(selector) {
+		var qaholder = document.querySelector(selector);
 		while (qaholder.firstChild) {
 			qaholder.removeChild(qaholder.lastChild);
 		}
@@ -180,21 +187,41 @@ window.onload = function () {
 		}
 	}
 
+	function printResult(message) {
+		clearContents(".results");
+		var horizontalLine = document.createElement("hr");
+		var h3Elem = document.createElement("h3");
+		h3Elem.innerHTML = "Result: " + message;
+		var divElem = document.getElementById("result-section");
+		divElem.appendChild(horizontalLine);
+		divElem.appendChild(h3Elem);
+		divElem.classList.remove("toggleDisplay");
+	}
+
+	function verifyAnswers() {
+		var radioSelected = getRadioValues("ans-radio");
+		if (!radioSelected) {
+			alert("Please select the answer.");
+			return false;
+		}
+		var ans_selected = document
+			.getElementById(radioSelected)
+			.getAttribute("data-answer-selected");
+		console.log(ans_selected);
+		var answer = ab[qindex];
+		console.log(answer);
+		if (answer != ans_selected) {
+			printResult("wrong");
+			timeLeft -= 5;
+		} else {
+			printResult("correct");
+		}
+	}
 	document
 		.querySelector("form[name = 'quizForm']")
 		.addEventListener("submit", function (event) {
 			event.preventDefault();
-			var radioSelected = getRadioValues("ans-radio");
-			console.log(radioSelected);
+			verifyAnswers();
+			buildNextQuestion();
 		});
-
-	var startTheQuiz = function () {
-		initialize();
-		createAQuestion();
-		// TurnOnTimer();
-		// CheckTheAnswers();
-		// displayScore();
-		// storeScore();
-		// displayTimer();
-	};
 };
