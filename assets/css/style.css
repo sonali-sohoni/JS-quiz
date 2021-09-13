@@ -45,7 +45,9 @@ header h1 {
 	border: 3px solid black;
 	text-align: center;
 }
-
+.form-btns {
+	text-align: left;
+}
 .timer {
 	text-align: right;
 	font-size: 24px;
@@ -68,10 +70,14 @@ ul li {
 	padding: 10px;
 	list-style-type: none;
 }
+
+ul li label {
+	padding: 20px;
+}
 .btns {
 	display: inline-block;
 	padding: 0.3em 1.2em;
-	margin: 0.3em;
+	margin: 1.5em;
 	color: beige;
 	background-color: #4eb5f1;
 	border-radius: 2em;
