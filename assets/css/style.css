@@ -73,6 +73,19 @@ header h1 {
 ul li {
 	padding: 10px;
 	list-style-type: none;
+
+	display: block;
+	margin: 10px;
+}
+
+li a {
+	background-color: cornflowerblue;
+	padding: 10px;
+	text-decoration: none;
+}
+
+.liSelected {
+	background-color: #ff5733;
 }
 
 ul li label {
@@ -97,3 +110,5 @@ ul li label {
 	padding: 10px;
 	margin: 5px;
 }
+
+

@@ -148,7 +148,14 @@ window.onload = function () {
 			var labelHtml =
 				"<label for='" + radioId + "'>" + ansArray[i] + "</label>";
 			var liElem = document.createElement("li");
-			liElem.innerHTML = radioHtml + labelHtml;
+			var aElem = document.createElement("a");
+			//	liElem.innerHTML = radioHtml + labelHtml;
+			aElem.innerHTML = ansArray[i];
+			aElem.href = "#";
+			aElem.id = radioId;
+			aElem.setAttribute("data-answer-selected", i);
+			aElem.classList.add("answerLinks");
+			liElem.appendChild(aElem);
 			ul1.appendChild(liElem);
 		}
 		div1.append(ul1);
@@ -156,6 +163,14 @@ window.onload = function () {
 		holder.appendChild(div1);
 		document.querySelector(".form-btns").classList.remove("toggleDisplay");
 		document.querySelector(".results").classList.add("toggleDisplay");
+		var alist = document.querySelectorAll(".answerLinks");
+		for (var j = 0; j < alist.length; j++) {
+			alist[j].addEventListener("click", function () {
+				console.log(this);
+        verifyAnswers2(this);
+        setTimeout(buildNextQuestion, 2000);
+			});
+		}
 	}
 
 	function startGame() {
@@ -217,6 +232,27 @@ window.onload = function () {
 			printResult("correct");
 		}
 	}
+
+	function verifyAnswers2(elem) {
+		var radioSelected = elem.id;
+		if (!radioSelected) {
+			alert("Please select the answer.");
+			return false;
+		}
+		var ans_selected = document
+			.getElementById(radioSelected)
+			.getAttribute("data-answer-selected");
+		console.log(ans_selected);
+		var answer = ab[qindex];
+		console.log(answer);
+		if (answer != ans_selected) {
+			printResult("wrong");
+			timeLeft -= 5;
+		} else {
+			printResult("correct");
+		}
+	}
+
 	document
 		.querySelector("form[name = 'quizForm']")
 		.addEventListener("submit", function (event) {
