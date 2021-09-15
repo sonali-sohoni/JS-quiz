@@ -86,13 +86,28 @@ window.onload = function () {
 		var html =
 			"<input type='button' id='save' value='Save Score' class='btns' /> ";
 		html +=
-			"	<input type='button' id='exit-btn' value='Exit Quiz' class='btns' /> ";
+			"	<input type='button' id='exit' value='Exit Quiz' class='btns' /> <p id ='message'></p>";
 		divElem.innerHTML = html;
 		console.log(divElem);
 
 		var holder = document.querySelector(".qaholder");
 		holder.appendChild(divElem);
 		console.dir(holder);
+		var save_btn = document.getElementById("save");
+		save_btn.addEventListener("click", function () {
+			var scorelist = JSON.parse(localStorage.getItem("jsscore"));
+			if (scorelist == null) scorelist = {};
+			console.log(scorelist);
+			var initials = prompt("Please enter the initials to save the score");
+			if (scorelist[initials]) {
+				alert("initials exists,try again");
+			} else {
+				scorelist[initials] = score;
+				localStorage.setItem("jsscore", JSON.stringify(scorelist));
+				document.getElementById("message").innerHTML = "Score saved!";
+				save_btn.disabled = true;
+			}
+		});
 	}
 
 	function createQuestionElement() {
