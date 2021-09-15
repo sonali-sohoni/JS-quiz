@@ -33,76 +33,17 @@ var ab = [2, 1, 3, 0];
 var timeLeft = 120;
 var qTimer;
 var qindex = -1;
-// function initialize() {
-// 	var qindex = -1;
-// }
-
-// function startTimer() {
-// 	qTimer = setInterval(function () {
-// 		if (timeLeft > 0) timeLeft--;
-// 		else timeLeft = 0;
-// 		document.getElementById("tleft").innerHTML = timeLeft + "s";
-// 	}, 1000);
-// }
-
-// function generateRandomQuestion() {
-// 	qindex = Math.floor(Math.random() * qb.length);
-// }
-
-// function createElemAndDisplayQuestion() {
-// 	var qString = qb[qindex].q;
-// 	var pelem = document.createElement("p");
-// 	pelem.classList.add("question");
-// 	pelem.innerHTML = "Question: " + qString;
-// 	var qform = document.querySelector(".qaholder");
-// 	qform.appendChild(pelem);
-// 	console.log(qform);
-// }
-
-// function createAndDisplayAnswerElements() {
-// 	var ansArray = qb[qindex].a;
-// 	console.log(ansArray);
-// 	for (var i = 0; i < ansArray.length; i++) {
-// 		var radioId = "ans" + i;
-// 		var radioHtml =
-// 			"<input type='radio' name='ans-radio' id='" + radioId + "' />";
-// 		var labelHtml = "<label for='" + radioId + "'>" + ansArray[i] + "</label>";
-// 		var liElem = document.createElement("li");
-// 		liElem.innerHTML = radioHtml + labelHtml;
-// 		document.getElementById("ansUL").appendChild(liElem);
-// 	}
-// }
-
-// function buildAQuestion() {
-// 	clearContents();
-// 	generateRandomQuestion();
-// 	createElemAndDisplayQuestion();
-// 	createAndDisplayAnswerElements();
-// 	startTimer();
-// }
-
-// function clearContents() {
-// 	var qaholder = document.querySelector(".qaholder");
-// 	while (qaholder.firstChild) {
-// 		qaholder.removeChild(qaholder.lastChild);
-// 	}
-// 	document.querySelector(".topper").style.display = "none";
-// }
-// var startTheQuiz = function () {
-// 	initialize();
-// 	createAQuestion();
-// 	// TurnOnTimer();
-// 	// CheckTheAnswers();
-// 	// displayScore();
-// 	// storeScore();
-// 	// displayTimer();
-// };
+var visited = [];
+var score = 0;
 
 window.onload = function () {
 	var start_btn = document.getElementById("start");
 	start_btn.addEventListener("click", startGame);
-	function initialize() {
+	function initVars() {
 		var qindex = -1;
+		visited = [];
+		score = 0;
+		timeLeft = 120;
 	}
 
 	function startTimer() {
@@ -116,6 +57,42 @@ window.onload = function () {
 	function generateRandomQuestion() {
 		qindex = Math.floor(Math.random() * qb.length);
 		console.log(qindex);
+		while (true) {
+			qindex = Math.floor(Math.random() * qb.length);
+
+			if (visited.includes(qindex)) {
+				qindex = -1;
+				continue;
+			} else {
+				visited.push(qindex);
+				break;
+			}
+		}
+
+		// if (visited.includes(qindex)) {
+		// 	qindex = -1;
+		// 	generateRandomQuestion();
+		// } else {
+		// 	visited.push(qindex);
+		// }
+	}
+
+	function saveScore() {
+		clearContents(".qaholder");
+		//	var html = "	<div class='form-btns toggleDisplay' > ";
+		var divElem = document.createElement("div");
+		divElem.classList.add("form-btns");
+		document.querySelector(".results").classList.add("toggleDisplay");
+		var html =
+			"<input type='button' id='save' value='Save Score' class='btns' /> ";
+		html +=
+			"	<input type='button' id='exit-btn' value='Exit Quiz' class='btns' /> ";
+		divElem.innerHTML = html;
+		console.log(divElem);
+
+		var holder = document.querySelector(".qaholder");
+		holder.appendChild(divElem);
+		console.dir(holder);
 	}
 
 	function createQuestionElement() {
@@ -161,25 +138,30 @@ window.onload = function () {
 		div1.append(ul1);
 		var holder = document.querySelector(".qaholder");
 		holder.appendChild(div1);
-		document.querySelector(".form-btns").classList.remove("toggleDisplay");
+		//	document.querySelector(".form-btns").classList.remove("toggleDisplay");
 		document.querySelector(".results").classList.add("toggleDisplay");
 		var alist = document.querySelectorAll(".answerLinks");
 		for (var j = 0; j < alist.length; j++) {
 			alist[j].addEventListener("click", function () {
 				console.log(this);
-        verifyAnswers2(this);
-        setTimeout(buildNextQuestion, 2000);
+				verifyAnswers2(this);
+				setTimeout(buildNextQuestion, 2000);
 			});
 		}
 	}
 
 	function startGame() {
+		initVars();
 		buildNextQuestion();
 		startTimer();
 	}
 
 	function buildNextQuestion() {
 		clearContents(".qaholder");
+		if (visited.length == qb.length) {
+			saveScore();
+			return;
+		}
 		generateRandomQuestion();
 		createQuestionElement();
 		createAnswersRadio();
@@ -206,7 +188,7 @@ window.onload = function () {
 		clearContents(".results");
 		var horizontalLine = document.createElement("hr");
 		var h3Elem = document.createElement("h3");
-		h3Elem.innerHTML = "Result: " + message;
+		h3Elem.innerHTML = "Result: " + message + " score : " + score;
 		var divElem = document.getElementById("result-section");
 		divElem.appendChild(horizontalLine);
 		divElem.appendChild(h3Elem);
@@ -242,13 +224,15 @@ window.onload = function () {
 		var ans_selected = document
 			.getElementById(radioSelected)
 			.getAttribute("data-answer-selected");
-		console.log(ans_selected);
+		//	console.log(ans_selected);
 		var answer = ab[qindex];
 		console.log(answer);
 		if (answer != ans_selected) {
 			printResult("wrong");
 			timeLeft -= 5;
 		} else {
+			score++;
+			document.getElementById("scoreSpan").innerHTML = score;
 			printResult("correct");
 		}
 	}
