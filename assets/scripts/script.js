@@ -40,6 +40,7 @@ window.onload = function () {
 	var start_btn = document.getElementById("start");
 	start_btn.addEventListener("click", startGame);
 	function initVars() {
+		clearTimer();
 		var qindex = -1;
 		visited = [];
 		score = 0;
@@ -52,6 +53,10 @@ window.onload = function () {
 			else timeLeft = 0;
 			document.getElementById("tleft").innerHTML = timeLeft + "s";
 		}, 1000);
+	}
+
+	function clearTimer() {
+		clearInterval(qTimer);
 	}
 
 	function generateRandomQuestion() {
@@ -108,6 +113,93 @@ window.onload = function () {
 				save_btn.disabled = true;
 			}
 		});
+	}
+
+	function processResults() {
+		getProcessResultsForm();
+	}
+	function getProcessResultsForm() {
+		clearContents(".qaholder");
+		//	var html = "	<div class='form-btns toggleDisplay' > ";
+		var divElem = document.createElement("div");
+		divElem.classList.add("form-btns");
+		document.querySelector(".results").classList.add("toggleDisplay");
+		var html =
+			"<label for ='initials'> Please enter initials</label><input type='text' id='initials' p /> ";
+
+		html +=
+			"<input type='submit' id='save' value='Save Score' class='btns' /> ";
+		//html +="	<input type='button' id='exit' value='Exit Quiz' class='btns' /> <p id ='message'></p>";
+		divElem.innerHTML = html;
+		console.log(divElem);
+
+		var holder = document.querySelector(".qaholder");
+		holder.appendChild(divElem);
+		console.dir(holder);
+		var save_btn = document.getElementById("save");
+		save_btn.addEventListener("click", function () {
+			var initials = document.getElementById("initials").value;
+			var scorelist = JSON.parse(localStorage.getItem("jsscore"));
+			if (scorelist == null) scorelist = {};
+			console.log(scorelist);
+			// var initials = prompt("Please enter the initials to save the score");
+			if (scorelist[initials]) {
+				alert("initials exists,try again");
+			} else {
+				scorelist[initials] = score;
+				localStorage.setItem("jsscore", JSON.stringify(scorelist));
+				//	document.getElementById("message").innerHTML = "Score saved!";
+				save_btn.disabled = true;
+				displaySummaryPage();
+			}
+		});
+	}
+
+	function displaySummaryPage() {
+		clearContents(".qaholder");
+		var scorelist = JSON.parse(localStorage.getItem("jsscore"));
+		var ulItem = document.createElement("ul");
+		var tblhtml =
+			"<table><tr><th colspan='2'>Initials</th><th colspan='2'>Score</th></tr>";
+
+		for (var key in scorelist) {
+			var value = scorelist[key];
+			var liItem = document.createElement("li");
+			liItem.innerHTML = key + "&nbsp;&nbsp;&nbsp;&nbsp;" + value;
+			ulItem.appendChild(liItem);
+			var trhtml =
+				" <tr><td colspan='2'>" +
+				key +
+				"</td><td colspan='2'>" +
+				value +
+				"</td></tr>";
+			tblhtml = tblhtml + trhtml;
+		}
+		tblhtml += "	</table>";
+		var holder = document.querySelector(".qaholder");
+		//	holder.appendChild(ulItem);
+		//holder.innerHTML = tblhtml;
+
+		var divElem = document.createElement("div");
+		divElem.classList.add("form-btns");
+
+		var html =
+			"<div class ='form-btns'><input type='button' id='go-back' value='Go Back' class='btns' /> ";
+		html +=
+			"	<input type='button' id='clear-scores' value='Clear Scores' class='btns' /> <p id ='message'></p></div>";
+		tblhtml += html;
+		holder.innerHTML = tblhtml;
+		console.log(document.getElementById("go-back"));
+		console.log(document.getElementById("clear-scores"));
+		document.getElementById("go-back").addEventListener("click", function () {
+			startGame();
+		});
+		document
+			.getElementById("clear-scores")
+			.addEventListener("click", function () {
+				localStorage.removeItem("jsscore");
+				displaySummaryPage();
+			});
 	}
 
 	function createQuestionElement() {
@@ -174,7 +266,7 @@ window.onload = function () {
 	function buildNextQuestion() {
 		clearContents(".qaholder");
 		if (visited.length == qb.length) {
-			saveScore();
+			processResults();
 			return;
 		}
 		generateRandomQuestion();
@@ -252,11 +344,11 @@ window.onload = function () {
 		}
 	}
 
-	document
-		.querySelector("form[name = 'quizForm']")
-		.addEventListener("submit", function (event) {
-			event.preventDefault();
-			verifyAnswers();
-			buildNextQuestion();
-		});
+	// document
+	// 	.querySelector("form[name = 'quizForm']")
+	// 	.addEventListener("submit", function (event) {
+	// 		event.preventDefault();
+	// 		verifyAnswers();
+	// 		buildNextQuestion();
+	// 	});
 };
