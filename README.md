@@ -33,7 +33,7 @@ https://sonali-sohoni.github.io/JS-quiz/
 ##Screenshots
 ![startgame](https://user-images.githubusercontent.com/88642738/133945728-44a88bb2-f3c4-466c-bc61-a1e4533d1378.JPG)
 ![img1](https://user-images.githubusercontent.com/88642738/133945741-f24c3568-4eda-4468-b8f4-231c12382f7b.JPG)
-![highscore](https://user-images.githubusercontent.com/88642738/133945743-6fc29bff-2e65-4851-9241-f3b2039f9033.JPG)
+![newhighscore](https://user-images.githubusercontent.com/88642738/133946660-c058f0df-efd6-4535-a3b6-e08a989ebab4.JPG)
 ![timeover](https://user-images.githubusercontent.com/88642738/133945750-a5d7bee6-5e0d-40f3-a833-f080843f241f.JPG)
 
 
