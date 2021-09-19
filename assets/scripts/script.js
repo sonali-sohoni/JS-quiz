@@ -136,7 +136,7 @@ window.onload = function () {
 		}
 		var html =
 			headerHtml +
-			"<label for ='initials'> Please enter initials</label>&nbsp;&nbsp;<input type='text' id='initials' p /> ";
+			"<label for ='initials'> Please enter initials</label>&nbsp;&nbsp;<input type='text' id='initials' style='text-transform: uppercase' /> ";
 
 		html +=
 			"<input type='submit' id='save' value='Save Score' class='btns' /> ";
@@ -151,6 +151,7 @@ window.onload = function () {
 		var save_btn = document.getElementById("save");
 		save_btn.addEventListener("click", function () {
 			var initials = document.getElementById("initials").value;
+			initials = initials.toUpperCase();
 			var scorelist = JSON.parse(localStorage.getItem("jsscore"));
 			if (scorelist == null) scorelist = {};
 			console.log(scorelist);
