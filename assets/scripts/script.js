@@ -147,7 +147,6 @@ window.onload = function () {
 			console.log(scorelist);
 			// var initials = prompt("Please enter the initials to save the score");
 			if (scorelist[initials]) {
-				alert("initials exists,try again");
 				var oldScore = scorelist[initials];
 				if (oldScore < score) m = "New High Score!!";
 				scorelist[initials] = score;
