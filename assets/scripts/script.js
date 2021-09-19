@@ -7,12 +7,12 @@ var qb = [
 			"string,number,boolean,undefined,null",
 			"string,Number",
 		],
-	},
+	}, //0
 
 	{
 		q: "What is the type of JavaScript language ?",
 		a: ["Object oriented", "Object based", "Assembly language", "High level"],
-	},
+	},//1
 	{
 		q: "When interpreter encounters an empty statements, what it will do:",
 		a: [
@@ -21,15 +21,44 @@ var qb = [
 			"Throws an error",
 			"Ignores the statements",
 		],
-	},
+	},//2
 	{
 		q: "The 'function' and 'var' are known as:",
 		a: ["Keywords", "Data types", "Declaration statements", "Prototypes"],
-	},
+	},//3
+	{
+		q: "Which company developed JavaScript?",
+		a: ["Microsoft", "Google", "Sun Microsystems", "Netscape"],
+	},//4
+	{
+		q: "What JavaScript Ignores?",
+		a: ["spaces", "tabs", "newlines", "All of the above"],
+	},//5
+	{
+		q: "which one is a ternary operator in JavaScript?",
+		a: ["?:", "&", ".", "#"],
+	},//6
+	{
+		q: "which of the following is not the looping structure?",
+		a: ["for", "forwhich", "do while", "while"],
+	},//7
+	{
+		q: "What do you mean by undefined?",
+		a: [
+			"Variable is not assigned any value",
+			"Property does not exist",
+			"Variable used in the code does not exist",
+			"All of the above",
+		],
+	},//8
+	{
+		q: "What is the output of 10/0",
+		a: ["Nothing is printed", "0", "Infinity", "garbage value"],
+	},//9
 ];
 
 console.log(qb);
-var ab = [2, 1, 3, 0];
+var ab = [2, 1, 3, 0, 3, 3, 0, 1, 3, 2];
 var timeLeft = 120;
 var qTimer;
 var qindex = -1;
@@ -80,38 +109,7 @@ window.onload = function () {
 		}
 	}
 
-	// function saveScore() {
-	// 	clearContents(".qaholder");
-	// 	//	var html = "	<div class='form-btns toggleDisplay' > ";
-	// 	var divElem = document.createElement("div");
-	// 	divElem.classList.add("form-btns");
-	// 	document.querySelector(".results").classList.add("toggleDisplay");
-	// 	var html =
-	// 		"<input type='button' id='save' value='Save Score' class='btns' /> ";
-	// 	html +=
-	// 		"	<input type='button' id='exit' value='Exit Quiz' class='btns' /> <p id ='message'></p>";
-	// 	divElem.innerHTML = html;
-	// 	console.log(divElem);
-
-	// 	var holder = document.querySelector(".qaholder");
-	// 	holder.appendChild(divElem);
-	// 	console.dir(holder);
-	// 	var save_btn = document.getElementById("save");
-	// 	save_btn.addEventListener("click", function () {
-	// 		var scorelist = JSON.parse(localStorage.getItem("jsscore"));
-	// 		if (scorelist == null) scorelist = {};
-	// 		console.log(scorelist);
-	// 		var initials = prompt("Please enter the initials to save the score");
-	// 		if (scorelist[initials]) {
-	// 			alert("initials exists,try again");
-	// 		} else {
-	// 			scorelist[initials] = score;
-	// 			localStorage.setItem("jsscore", JSON.stringify(scorelist));
-	// 			document.getElementById("message").innerHTML = "Score saved!";
-	// 			save_btn.disabled = true;
-	// 		}
-	// 	});
-	// }
+	
 
 	function processResults() {
 		clearTimer();
@@ -302,26 +300,7 @@ window.onload = function () {
 		divElem.classList.remove("toggleDisplay");
 	}
 
-	// function verifyAnswers() {
-	// 	var radioSelected = getRadioValues("ans-radio");
-	// 	if (!radioSelected) {
-	// 		alert("Please select the answer.");
-	// 		return false;
-	// 	}
-	// 	var ans_selected = document
-	// 		.getElementById(radioSelected)
-	// 		.getAttribute("data-answer-selected");
-	// 	console.log(ans_selected);
-	// 	var answer = ab[qindex];
-	// 	console.log(answer);
-	// 	if (answer != ans_selected) {
-	// 		printResult("wrong");
-	// 		timeLeft -= 5;
-	// 	} else {
-	// 		printResult("correct");
-	// 	}
-	// }
-
+	
 	function verifyAnswers2(elem) {
 		var radioSelected = elem.id;
 		if (!radioSelected) {
