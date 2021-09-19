@@ -15,6 +15,7 @@ header {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-around;
+	background-color: #d3d3d3;
 }
 header h1 {
 	text-align: left;
@@ -28,11 +29,11 @@ header h1 {
 	padding: 30px;
 	margin: 60px auto 60px auto;
 }
+
 .topper {
-	margin-left: 30%;
+	margin: auto auto;
 	padding: 10px;
-	text-align: left;
-	display: center;
+	text-align: center;
 }
 .btn-start {
 	background-color: #ff5733;
@@ -122,4 +123,8 @@ th {
 	padding: 0.5rem;
 	background-color: lightskyblue;
 	color: darkblue;
+}
+
+.score-header {
+	text-align: left;
 }

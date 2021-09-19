@@ -12,7 +12,7 @@ var qb = [
 	{
 		q: "What is the type of JavaScript language ?",
 		a: ["Object oriented", "Object based", "Assembly language", "High level"],
-	},//1
+	}, //1
 	{
 		q: "When interpreter encounters an empty statements, what it will do:",
 		a: [
@@ -21,27 +21,27 @@ var qb = [
 			"Throws an error",
 			"Ignores the statements",
 		],
-	},//2
+	}, //2
 	{
 		q: "The 'function' and 'var' are known as:",
 		a: ["Keywords", "Data types", "Declaration statements", "Prototypes"],
-	},//3
+	}, //3
 	{
 		q: "Which company developed JavaScript?",
 		a: ["Microsoft", "Google", "Sun Microsystems", "Netscape"],
-	},//4
+	}, //4
 	{
 		q: "What JavaScript Ignores?",
 		a: ["spaces", "tabs", "newlines", "All of the above"],
-	},//5
+	}, //5
 	{
 		q: "which one is a ternary operator in JavaScript?",
 		a: ["?:", "&", ".", "#"],
-	},//6
+	}, //6
 	{
 		q: "which of the following is not the looping structure?",
 		a: ["for", "forwhich", "do while", "while"],
-	},//7
+	}, //7
 	{
 		q: "What do you mean by undefined?",
 		a: [
@@ -50,11 +50,11 @@ var qb = [
 			"Variable used in the code does not exist",
 			"All of the above",
 		],
-	},//8
+	}, //8
 	{
 		q: "What is the output of 10/0",
 		a: ["Nothing is printed", "0", "Infinity", "garbage value"],
-	},//9
+	}, //9
 ];
 
 console.log(qb);
@@ -109,8 +109,6 @@ window.onload = function () {
 		}
 	}
 
-	
-
 	function processResults() {
 		clearTimer();
 		getProcessResultsForm();
@@ -121,8 +119,15 @@ window.onload = function () {
 		var divElem = document.createElement("div");
 		divElem.classList.add("form-btns");
 		document.querySelector(".results").classList.add("toggleDisplay");
+		var headerHtml = "";
+		if (timeLeft == 0) {
+			headerHtml += "<h3 style='color:#ff5733;font-weight:bold'> ";
+			headerHtml += "Time Over!!!";
+			headerHtml += " </h3>";
+		}
 		var html =
-			"<label for ='initials'> Please enter initials</label><input type='text' id='initials' p /> ";
+			headerHtml +
+			"<label for ='initials'> Please enter initials</label>&nbsp;&nbsp;<input type='text' id='initials' p /> ";
 
 		html +=
 			"<input type='submit' id='save' value='Save Score' class='btns' /> ";
@@ -133,6 +138,7 @@ window.onload = function () {
 		var holder = document.querySelector(".qaholder");
 		holder.appendChild(divElem);
 		console.dir(holder);
+		var m = "";
 		var save_btn = document.getElementById("save");
 		save_btn.addEventListener("click", function () {
 			var initials = document.getElementById("initials").value;
@@ -142,22 +148,43 @@ window.onload = function () {
 			// var initials = prompt("Please enter the initials to save the score");
 			if (scorelist[initials]) {
 				alert("initials exists,try again");
+				var oldScore = scorelist[initials];
+				if (oldScore < score) m = "New High Score!!";
+				scorelist[initials] = score;
+				saveScores(m, scorelist);
 			} else {
 				scorelist[initials] = score;
-				localStorage.setItem("jsscore", JSON.stringify(scorelist));
-				//	document.getElementById("message").innerHTML = "Score saved!";
-				save_btn.disabled = true;
-				displaySummaryPage();
+				// localStorage.setItem("jsscore", JSON.stringify(scorelist));
+				// //	document.getElementById("message").innerHTML = "Score saved!";
+				// save_btn.disabled = true;
+				// displaySummaryPage();
+				saveScores("", scorelist);
 			}
 		});
 	}
+	function saveScores(message, scorelist) {
+		//	scorelist[initials] = score;
+		localStorage.setItem("jsscore", JSON.stringify(scorelist));
+		//	document.getElementById("message").innerHTML = "Score saved!";
+		//	save_btn.disabled = true;
+		displaySummaryPage(message);
+	}
 
-	function displaySummaryPage() {
+	function displaySummaryPage(m) {
 		clearContents(".qaholder");
 		document.getElementById("tleft").innerHTML = "";
 		var scorelist = JSON.parse(localStorage.getItem("jsscore"));
 		var ulItem = document.createElement("ul");
+		var headerHtml = "<div class=score-header> ";
+		if (m !== "") {
+			headerHtml += "<h3 style='color:#ff5733;font-weight:bold'> ";
+			headerHtml += m;
+			headerHtml += " </h3>";
+		}
+		headerHtml +=
+			"<h2 style='color:darkblue;font-weight:bold'> Score Card</h3>";
 		var tblhtml =
+			headerHtml +
 			"<table><tr><th colspan='2'>Initials</th><th colspan='2'>Score</th></tr>";
 
 		for (var key in scorelist) {
@@ -196,7 +223,7 @@ window.onload = function () {
 			.getElementById("clear-scores")
 			.addEventListener("click", function () {
 				localStorage.removeItem("jsscore");
-				displaySummaryPage();
+				displaySummaryPage("");
 			});
 	}
 
@@ -300,7 +327,6 @@ window.onload = function () {
 		divElem.classList.remove("toggleDisplay");
 	}
 
-	
 	function verifyAnswers2(elem) {
 		var radioSelected = elem.id;
 		if (!radioSelected) {
