@@ -74,7 +74,7 @@ window.onload = function () {
 		var qindex = -1;
 		visited = [];
 		score = 0;
-		timeLeft = 120;
+		timeLeft = 75;
 		document.getElementById("scoreSpan").innerHTML = score;
 	}
 
@@ -91,6 +91,7 @@ window.onload = function () {
 
 	function clearTimer() {
 		clearInterval(qTimer);
+		qTimer = null;
 	}
 
 	function generateRandomQuestion() {
@@ -119,6 +120,7 @@ window.onload = function () {
 		var divElem = document.createElement("div");
 		divElem.classList.add("form-btns");
 		document.querySelector(".results").classList.add("toggleDisplay");
+		document.querySelector(".view-score").classList.add("toggleDisplay");
 		var headerHtml = "";
 		if (timeLeft == 0) {
 			headerHtml += "<h3 style='color:#ff5733;font-weight:bold'> ";
@@ -148,16 +150,27 @@ window.onload = function () {
 			// var initials = prompt("Please enter the initials to save the score");
 			if (scorelist[initials]) {
 				var oldScore = scorelist[initials];
-				if (oldScore < score) m = "New High Score!!";
-				scorelist[initials] = score;
-				saveScores(m, scorelist);
+				if (oldScore < score) {
+					m = "New High Score!!";
+					scorelist[initials] = score;
+					saveScores(m, scorelist);
+				} else {
+					var save = confirm(
+						"Your score is less than or equal to previously stored score. Do you want to save it?"
+					);
+					if (save) {
+						scorelist[initials] = score;
+						saveScores("", scorelist);
+					} else displaySummaryPage("");
+				}
 			} else {
+				// var save = confirm(
+				// 	"Your score is less than or equal to previously stored score. Do you want to save it?"
+				// );
+				// if (save) {
 				scorelist[initials] = score;
-				// localStorage.setItem("jsscore", JSON.stringify(scorelist));
-				// //	document.getElementById("message").innerHTML = "Score saved!";
-				// save_btn.disabled = true;
-				// displaySummaryPage();
 				saveScores("", scorelist);
+				//	} else displaySummaryPage("");
 			}
 		});
 	}
@@ -170,6 +183,9 @@ window.onload = function () {
 	}
 
 	function displaySummaryPage(m) {
+		document
+			.querySelector(".view-score")
+			.classList.remove("toggleDisplay");
 		clearContents(".qaholder");
 		document.getElementById("tleft").innerHTML = "";
 		var scorelist = JSON.parse(localStorage.getItem("jsscore"));
@@ -216,7 +232,10 @@ window.onload = function () {
 		console.log(document.getElementById("go-back"));
 		console.log(document.getElementById("clear-scores"));
 		document.getElementById("go-back").addEventListener("click", function () {
-			startGame();
+			if (qTimer) {
+				visited.pop();
+				buildNextQuestion();
+			} else startGame();
 		});
 		document
 			.getElementById("clear-scores")
@@ -347,4 +366,9 @@ window.onload = function () {
 			printResult("correct");
 		}
 	}
+
+	var scoreView = document.getElementById("score-view");
+	scoreView.addEventListener("click", function () {
+		displaySummaryPage("");
+	});
 };
