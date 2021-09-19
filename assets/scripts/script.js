@@ -1,3 +1,4 @@
+//question bank array
 var qb = [
 	{
 		q: "What are different data types in JS ?",
@@ -58,6 +59,7 @@ var qb = [
 ];
 
 console.log(qb);
+//Answer bank array
 var ab = [2, 1, 3, 0, 3, 3, 0, 1, 3, 2];
 var timeLeft = 120;
 var qTimer;
@@ -69,6 +71,7 @@ window.onload = function () {
 	var start_btn = document.getElementById("start");
 	start_btn.addEventListener("click", startGame);
 
+	//initializa variables
 	function initVars() {
 		clearTimer();
 		var qindex = -1;
@@ -78,6 +81,7 @@ window.onload = function () {
 		document.getElementById("scoreSpan").innerHTML = score;
 	}
 
+	//Start the timer
 	function startTimer() {
 		qTimer = setInterval(function () {
 			if (timeLeft > 0) timeLeft--;
@@ -88,12 +92,13 @@ window.onload = function () {
 			document.getElementById("tleft").innerHTML = timeLeft + "s";
 		}, 1000);
 	}
-
+	//clear the timer
 	function clearTimer() {
 		clearInterval(qTimer);
 		qTimer = null;
 	}
 
+	//Generate random question
 	function generateRandomQuestion() {
 		qindex = Math.floor(Math.random() * qb.length);
 		console.log(qindex);
@@ -110,10 +115,12 @@ window.onload = function () {
 		}
 	}
 
+	//Process Results
 	function processResults() {
 		clearTimer();
 		getProcessResultsForm();
 	}
+	//Results form
 	function getProcessResultsForm() {
 		clearContents(".qaholder");
 		//	var html = "	<div class='form-btns toggleDisplay' > ";
@@ -174,6 +181,8 @@ window.onload = function () {
 			}
 		});
 	}
+
+	//Save scores
 	function saveScores(message, scorelist) {
 		//	scorelist[initials] = score;
 		localStorage.setItem("jsscore", JSON.stringify(scorelist));
@@ -182,10 +191,9 @@ window.onload = function () {
 		displaySummaryPage(message);
 	}
 
+	//Summary Page
 	function displaySummaryPage(m) {
-		document
-			.querySelector(".view-score")
-			.classList.remove("toggleDisplay");
+		document.querySelector(".view-score").classList.remove("toggleDisplay");
 		clearContents(".qaholder");
 		document.getElementById("tleft").innerHTML = "";
 		var scorelist = JSON.parse(localStorage.getItem("jsscore"));
@@ -245,6 +253,7 @@ window.onload = function () {
 			});
 	}
 
+	//Display questions
 	function createQuestionElement() {
 		var qString = qb[qindex].q;
 		var pelem = document.createElement("p");
@@ -255,6 +264,7 @@ window.onload = function () {
 		console.log(qform);
 	}
 
+	//Display answers
 	function createAnswersRadio() {
 		var ansArray = qb[qindex].a;
 		console.log(ansArray);
@@ -299,13 +309,14 @@ window.onload = function () {
 			});
 		}
 	}
-
+	//Start the game
 	function startGame() {
 		initVars();
 		buildNextQuestion();
 		startTimer();
 	}
 
+	//Get next question
 	function buildNextQuestion() {
 		clearContents(".qaholder");
 		if (visited.length == qb.length) {
@@ -317,6 +328,7 @@ window.onload = function () {
 		createAnswersRadio();
 	}
 
+	//clear the content area
 	function clearContents(selector) {
 		var qaholder = document.querySelector(selector);
 		while (qaholder.firstChild) {
@@ -334,6 +346,7 @@ window.onload = function () {
 		}
 	}
 
+	//Display results at bottom
 	function printResult(message) {
 		clearContents(".results");
 		var horizontalLine = document.createElement("hr");
@@ -367,6 +380,7 @@ window.onload = function () {
 		}
 	}
 
+	//View scorecard
 	var scoreView = document.getElementById("score-view");
 	scoreView.addEventListener("click", function () {
 		displaySummaryPage("");
