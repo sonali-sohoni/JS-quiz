@@ -372,12 +372,14 @@ window.onload = function () {
 		var answer = ab[qindex];
 		console.log(answer);
 		if (answer != ans_selected) {
-			printResult("wrong");
+			printResult("<span style= 'color:red'>wrong</span>");
 			timeLeft -= 5;
 		} else {
 			score++;
 			document.getElementById("scoreSpan").innerHTML = score;
-			printResult("correct");
+			printResult(
+				"<span style= 'color:green; font-weight:bold;'>correct</span>"
+			);
 		}
 	}
 
